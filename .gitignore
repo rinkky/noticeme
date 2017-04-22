@@ -1,0 +1,10 @@
+#python
+*.egg
+*.egg-info
+*.py[cod]
+*.so
+build
+dist
+
+#myconfig
+wechatcfg.py
