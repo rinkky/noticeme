@@ -26,7 +26,7 @@ class Wechat:
 			return echostr
 
 	def POST(self):
-
+		return None	
 
 
 	def _is_from_wechat(self,data):
