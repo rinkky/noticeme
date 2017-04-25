@@ -63,9 +63,9 @@ class Wechat:
 			content = xml.find("Content").text
 		return {
 			"MsgType": msg_type,
-			"FromUserName": from_user
-			"ToUserName": to_user
-			"Content": content
+			"FromUserName": from_user,
+			"ToUserName": to_user,
+			"Content": content,
 			"MsgId": msg_id
 		}
 
