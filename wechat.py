@@ -11,6 +11,7 @@ import wechatcfg
 import hashlib
 import re
 from lxml import etree
+import sys
 sys.path.append("../")
 from playstoredata import playstoredata
 
@@ -89,7 +90,7 @@ class Wechat:
 					)
 			else:
 				reply_content = "No such app"
-				
+
 			return self.render.reply_text(
 				wechat_msg["FromUserName"],
 				wechat_msg["ToUserName"],
