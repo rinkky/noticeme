@@ -1,0 +1,4 @@
+#! python2
+# coding=utf-8
+
+wechat_token = ""
