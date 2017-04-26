@@ -12,6 +12,8 @@ import hashlib
 import re
 from lxml import etree
 import sys
+import os
+import time
 sys.path.append("../")
 from playstoredata import playstoredata
 
@@ -50,7 +52,7 @@ class Wechat:
 		lst = [token,timestamp,nonce]
 		lst.sort()
 		sha1 = hashlib.sha1()
-		sha1.update("",join(lst))
+		sha1.update("".join(lst))
 		return signature == sha1.hexdigest()
 
 	def _trans_msg(self,xml_msg):
@@ -80,7 +82,7 @@ class Wechat:
 			if match:
 				app_uniq_name = match.group(0)
 				app_detail = playstoredata.get_app_detail(app_uniq_name)
-				if (app_detail is None) or (app_detail["unip_name"] is None):
+				if (app_detail is None) or (app_detail["uniq_name"] is None):
 					reply_content = "No such app"
 				else:
 					reply_content = "{0} \n{1} \n${2}".format(
