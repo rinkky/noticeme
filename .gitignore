@@ -9,6 +9,7 @@ dist
 #myconfig
 wechatcfg.py
 dbconfig.py
+*.log
 
 #tmp
 test.py
