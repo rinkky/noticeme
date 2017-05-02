@@ -6,6 +6,8 @@ import wechatcfg
 import sys
 sys.path.append("../")
 from playstoredata import playstoredata
+import time
+import json
 
 url_token = (
 	"https://api.weixin.qq.com/cgi-bin/token"
@@ -26,9 +28,9 @@ data = r.json()
 access_token = data.get("access_token")
 
 url_sendmsg = (
-	"https://api.weixin.qq.com/cgi-bin/message/mass/sendall"
-	"?access_token={0}"
+	"https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token={0}"
 ).format(access_token)
+print(url_sendmsg)
 
 apps = playstoredata.get_notice_apps()
 text_to_send = "here are the apps on sale:\n"
@@ -44,15 +46,19 @@ for app in apps:
 text_to_send = text_to_send + "".join(apps_detail)
 print(text_to_send)
 
-data_to_send ={
-	"filter":{
-		"is_to_all":True
+data_to_send = {
+	"filter": {
+		"is_to_all": False,
+		"tag_id": 0
 	},
-	"text":{
-		"content":text_to_send
-	},
-	"msgtype":"text"
+	"msgtype": "text",
+	"text": {"content": text_to_send,}
 }
+data_to_send = json.dumps(data_to_send)
+headers = {"content-type": "application/json"}
 
-r = requests.post(url_sendmsg,data=data_to_send)
+#time.sleep(60)
+r = requests.post(url_sendmsg, data=data_to_send, headers=headers)
 print(r.status_code)
+print(r.text)
+print(r.json())

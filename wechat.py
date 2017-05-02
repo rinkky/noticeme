@@ -49,9 +49,10 @@ class Wechat:
 	def POST(self):
 		str_xml = web.data()
 		wechat_msg = self._trans_msg(str_xml)
-		if wechat_msg["MsgType"] == "event" and 
-			wechat_msg["Event"] == "MASSSENDJOBFINISH":
+		if (wechat_msg["MsgType"] == "event" and 
+			wechat_msg["Event"] == "MASSSENDJOBFINISH"):
 			logging.debug(str_xml)
+			print(str_xml)
 		return self._get_reply(wechat_msg)
 
 
@@ -59,7 +60,7 @@ class Wechat:
 		token = wechatcfg.wechat_token
 		timestamp = data.timestamp
 		nonce = data.nonce
-		signature = data.signature		
+		signature = data.signature
 
 		lst = [token,timestamp,nonce]
 		lst.sort()
