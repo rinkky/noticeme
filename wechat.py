@@ -16,9 +16,11 @@ import os
 import time
 sys.path.append("../")
 from playstoredata import playstoredata
+from test import Test
 
 urls = (
-	"/wechat", "Wechat"
+	"/wechat", "Wechat",
+        "/test","Test"
 )
 
 
@@ -62,19 +64,33 @@ class Wechat:
 		to_user = xml.find("ToUserName").text
 		msg_id = xml.find("MsgId")
 		content = ""
+		event = ""
 		if msg_type == "text":
 			content = xml.find("Content").text
+ 		elif msg_type == "event":
+			event = xml.find("Event").text
 		return {
 			"MsgType": msg_type,
 			"FromUserName": from_user,
 			"ToUserName": to_user,
 			"Content": content,
-			"MsgId": msg_id
+			"MsgId": msg_id,
+			"Event":event
 		}
 
 	def _get_reply(self,wechat_msg):
 		msg_type = wechat_msg["MsgType"]
-		if msg_type == "text":
+		if msg_type == "event":
+			event = wechat_msg["Event"]
+			if event == "subscribe":
+				reply_content = "Thank you for following, try this reply:\ncom.mojang.minecraftpe"
+				return self.render.reply_text(
+					wechat_msg["FromUserName"],
+					wechat_msg["ToUserName"],
+					int(time.time()),
+					reply_content
+				)
+                if msg_type == "text":
 			msg_content = wechat_msg["Content"]
 			p = re.compile(r"\w+\.\w+\.\w+")
 			match = p.match(msg_content)
