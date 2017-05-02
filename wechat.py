@@ -17,12 +17,19 @@ import time
 sys.path.append("../")
 from playstoredata import playstoredata
 from test import Test
+import logging
 
 urls = (
 	"/wechat", "Wechat",
-        "/test","Test"
+	"/test","Test"
 )
-
+logging.basicConfig(
+	filename="./wechat.log",
+	level=logging.DEBUG,
+#	formatter=logging.Formatter(
+#		"[%(levelname)s][%(funcName)s][%(asctime)s]%(message)s"
+#	)
+)
 
 class Wechat:
 	def __init__(self):
@@ -42,6 +49,9 @@ class Wechat:
 	def POST(self):
 		str_xml = web.data()
 		wechat_msg = self._trans_msg(str_xml)
+		if wechat_msg["MsgType"] == "event" and 
+			wechat_msg["Event"] == "MASSSENDJOBFINISH":
+			logging.debug(str_xml)
 		return self._get_reply(wechat_msg)
 
 
@@ -83,14 +93,20 @@ class Wechat:
 		if msg_type == "event":
 			event = wechat_msg["Event"]
 			if event == "subscribe":
-				reply_content = "Thank you for following, try this reply:\ncom.mojang.minecraftpe"
+				reply_content = (
+					"Thank you for following, "
+					"try this reply:\ncom.mojang.minecraftpe"
+				)
 				return self.render.reply_text(
 					wechat_msg["FromUserName"],
 					wechat_msg["ToUserName"],
 					int(time.time()),
 					reply_content
 				)
-                if msg_type == "text":
+#			if event == "MASSSENDJOBFINISH":
+#				logging.debug("")
+#				return None
+		if msg_type == "text":
 			msg_content = wechat_msg["Content"]
 			p = re.compile(r"\w+\.\w+\.\w+")
 			match = p.match(msg_content)
