@@ -61,5 +61,7 @@ headers = {"content-type": "application/json"}
 #time.sleep(60)
 r = requests.post(url_sendmsg, data=data_to_send, headers=headers)
 print(r.status_code)
-print(r.text)
-print(r.json())
+#print(r.text)
+errmsg = r.json()
+if errmsg.get("errcode") == 0:
+	playstoredata.clean_notice_apps()
