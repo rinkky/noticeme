@@ -34,7 +34,7 @@ url_sendmsg = (
 print(url_sendmsg)
 
 apps = playstoredata.get_notice_apps()
-text_to_send = "here are the apps on sale:\n"
+text_to_send = time.asctime() + "\nhere are the apps on sale:\n"
 apps_detail = []
 for app in apps:
 	apps_detail.append(
