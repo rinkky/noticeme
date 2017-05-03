@@ -34,17 +34,20 @@ url_sendmsg = (
 print(url_sendmsg)
 
 apps = playstoredata.get_notice_apps()
-text_to_send = time.asctime() + "\nhere are the apps on sale:\n"
-apps_detail = []
-for app in apps:
-	apps_detail.append(
-		"{0}\n{1}\n{2}\n----\n".format(
-			app.uniq_name,
-			app.name,
-			app.price
+if apps is None:
+	text_to_send = time.asctime() + "\nNo apps on sale"
+else:
+	text_to_send = time.asctime() + "\nhere are the apps on sale:\n"
+	apps_detail = []
+	for app in apps:
+		apps_detail.append(
+			"{0}\n{1}\n{2}\n----\n".format(
+				app.uniq_name,
+				app.name,
+				app.price
+			)
 		)
-	)
-text_to_send = text_to_send + "".join(apps_detail)
+	text_to_send = text_to_send + "".join(apps_detail)
 print(text_to_send)
 
 data_to_send = {
