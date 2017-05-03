@@ -51,7 +51,7 @@ class Wechat:
 		wechat_msg = self._trans_msg(str_xml)
 		if (wechat_msg["MsgType"] == "event" and 
 			wechat_msg["Event"] == "MASSSENDJOBFINISH"):
-			logging.debug(str_xml)
+			#logging.debug(str_xml)
 			print(str_xml)
 		return self._get_reply(wechat_msg)
 
@@ -124,7 +124,7 @@ class Wechat:
 					)
 			else:
 				reply_content = "No such app"
-
+		logging.debug(reply_content)
 		return self.render.reply_text(
 			wechat_msg["FromUserName"],
 			wechat_msg["ToUserName"],
