@@ -93,15 +93,19 @@ class Wechat:
 				elif self.event_key == "TEST":
 					reply_content = "TEST"
 		elif self.msg_type == "text":
-			p = re.compile(r"\w+\.\w+\.\w+")
-			match = p.match(self.content)
+			p = re.compile(r"\w+\.\w+\.\w+\.?\w*")
+			match = p.search(self.content)
 			if match:
 				app_uniq_name = match.group(0)
 				app_detail = playstoredata.get_app_detail(app_uniq_name)
 				if (app_detail is None) or (app_detail["uniq_name"] is None):
 					reply_content = "No such app"
 				else:
-					reply_content = "{0} \n{1} \n${2}".format(
+					reply_content = (
+						"{0} \n{1} \n${2}\n"
+						"This app is already in watch list."
+						"I will notice you when it is on sale."
+					).format(
 						app_uniq_name,
 						app_detail["name"],
 						str(app_detail["price"])
