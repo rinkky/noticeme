@@ -16,12 +16,10 @@ import os
 import time
 sys.path.append(os.path.join(sys.path[0],os.pardir))
 from playstoredata import playstoredata
-from test import Test
 import logging
 
 urls = (
 	"/wechat", "Wechat",
-	"/test","Test"
 )
 logging.basicConfig(
 	filename="./wechat.log",
@@ -70,34 +68,41 @@ class Wechat:
 
 	def _trans_msg(self,xml_msg):
 		xml = etree.fromstring(xml_msg)
+		msg_type = xml.find("MsgType")
+		from_user_name = xml.find("FromUserName")
+		to_user_name = xml.find("ToUserName")
+		content = xml.find("Content")
+		msg_id = xml.find("MsgId")
+		event = xml.find("Event")
+		event_key = xml.find("EventKey")
 		return {
 			"MsgType": (
-				xml.find("MsgType") and 
-				xml.find("MsgType").text
+				None if msg_type is None 
+				else msg_type.text
 			),
 			"FromUserName": (
-				xml.find("FromUserName") and
-				xml.find("FromUserName").text
+				None if from_user_name is None 
+				else from_user_name.text
 			),
 			"ToUserName": (
-				xml.find("ToUserName") and
-				xml.find("ToUserName").text
+				None if to_user_name is None
+				else to_user_name.text
 			),
 			"Content": (
-				xml.find("Content") and
-				xml.find("Content").text
+				None if content is None
+				else content.text
 			),
 			"MsgId": (
-				xml.find("MsgId") and
-				xml.find("MsgId").text
+				None if msg_id is None
+				else msg_id.text
 			),
 			"Event": (
-				xml.find("Event") and
-				xml.find("Event").text
+				None if event is None
+				else event.text
 			),
-			"EventKey":(
-				xml.find("EventKey") and
-				xml.find("EventKey").text
+			"EventKey": (
+				None if event_key is None
+				else event_key.text
 			)
 		}
 
