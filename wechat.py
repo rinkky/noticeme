@@ -74,13 +74,9 @@ class Wechat:
 		from_user = xml.find("FromUserName").text
 		to_user = xml.find("ToUserName").text
 		msg_id = xml.find("MsgId")
-		content = ""
-		event = ""
-		if msg_type == "text":
-			content = xml.find("Content").text
- 		elif msg_type == "event":
-			event = xml.find("Event").text
-			eventkey = xml.find("EventKey").text
+		content = xml.find("Content").text
+		event = xml.find("Event").text
+		eventkey = xml.find("EventKey").text
 		return {
 			"MsgType": msg_type,
 			"FromUserName": from_user,
