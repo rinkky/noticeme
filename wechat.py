@@ -24,9 +24,9 @@ urls = (
 logging.basicConfig(
 	filename="./wechat.log",
 	level=logging.DEBUG,
-#	formatter=logging.Formatter(
-#		"[%(levelname)s][%(funcName)s][%(asctime)s]%(message)s"
-#	)
+	formatter=logging.Formatter(
+		"[%(levelname)s][%(funcName)s][%(asctime)s]%(message)s"
+	)
 )
 
 class Wechat:
@@ -46,12 +46,12 @@ class Wechat:
 
 	def POST(self):
 		str_xml = web.data()
-		wechat_msg = self._trans_msg(str_xml)
-		if (wechat_msg["MsgType"] == "event" and 
-			wechat_msg["Event"] == "MASSSENDJOBFINISH"):
-			#logging.debug(str_xml)
-			print(str_xml)
-		return self._get_reply(wechat_msg)
+		self._trans_msg(str_xml)
+#		if (self.msg_type == "event" and 
+#			self.event == "MASSSENDJOBFINISH"):
+#			logging.debug(str_xml)
+#			print(str_xml)
+		return self._get_reply()
 
 
 	def _is_from_wechat(self,data):
@@ -68,67 +68,33 @@ class Wechat:
 
 	def _trans_msg(self,xml_msg):
 		xml = etree.fromstring(xml_msg)
-		msg_type = xml.find("MsgType")
-		from_user_name = xml.find("FromUserName")
-		to_user_name = xml.find("ToUserName")
-		content = xml.find("Content")
-		msg_id = xml.find("MsgId")
-		event = xml.find("Event")
-		event_key = xml.find("EventKey")
-		return {
-			"MsgType": (
-				None if msg_type is None 
-				else msg_type.text
-			),
-			"FromUserName": (
-				None if from_user_name is None 
-				else from_user_name.text
-			),
-			"ToUserName": (
-				None if to_user_name is None
-				else to_user_name.text
-			),
-			"Content": (
-				None if content is None
-				else content.text
-			),
-			"MsgId": (
-				None if msg_id is None
-				else msg_id.text
-			),
-			"Event": (
-				None if event is None
-				else event.text
-			),
-			"EventKey": (
-				None if event_key is None
-				else event_key.text
-			)
-		}
+		self.msg_type = xml.findtext("MsgType")
+		self.from_user_name = xml.findtext("FromUserName")
+		self.to_user_name = xml.findtext("ToUserName")
+		self.content = xml.findtext("Content")
+		self.msg_id = xml.findtext("MsgId")
+		self.event = xml.findtext("Event")
+		self.event_key = xml.findtext("EventKey")
 
-	def _get_reply(self,wechat_msg):
-		msg_type = wechat_msg["MsgType"]
-		logging.debug(msg_type)
+	def _get_reply(self):
+		logging.debug(self.msg_type)
 		reply_content = "I don't know what you are talking about :("
-		if msg_type == "event":
-			event = wechat_msg["Event"]
-			if event == "subscribe":
+		if self.msg_type == "event":
+			if self.event == "subscribe":
 				reply_content = (
 					"Thank you for following, "
 					"try this reply:\ncom.mojang.minecraftpe"
 				)
-			elif event == "CLICK":
-				eventkey = wechat_msg["EventKey"]
-				if eventkey == "HELP":
+			elif self.event == "CLICK":
+				if self.event_key == "HELP":
 					reply_content = "HELP CONTENT"
-				elif eventkey == "SHOW_LIST":
+				elif self.event_key == "SHOW_LIST":
 					reply_content = "LIST CONTENT"
-				elif eventkey == "TEST":
+				elif self.event_key == "TEST":
 					reply_content = "TEST"
-		elif msg_type == "text":
-			msg_content = wechat_msg["Content"]
+		elif self.msg_type == "text":
 			p = re.compile(r"\w+\.\w+\.\w+")
-			match = p.match(msg_content)
+			match = p.match(self.content)
 			if match:
 				app_uniq_name = match.group(0)
 				app_detail = playstoredata.get_app_detail(app_uniq_name)
@@ -144,8 +110,8 @@ class Wechat:
 				reply_content = "No such app"
 		logging.debug(reply_content)
 		return self.render.reply_text(
-			wechat_msg["FromUserName"],
-			wechat_msg["ToUserName"],
+			self.from_user_name,
+			self.to_user_name,
 			int(time.time()),
 			reply_content
 		)
