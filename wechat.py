@@ -70,21 +70,35 @@ class Wechat:
 
 	def _trans_msg(self,xml_msg):
 		xml = etree.fromstring(xml_msg)
-		msg_type = xml.find("MsgType").text
-		from_user = xml.find("FromUserName").text
-		to_user = xml.find("ToUserName").text
-		msg_id = xml.find("MsgId")
-		content = xml.find("Content").text
-		event = xml.find("Event").text
-		eventkey = xml.find("EventKey").text
 		return {
-			"MsgType": msg_type,
-			"FromUserName": from_user,
-			"ToUserName": to_user,
-			"Content": content,
-			"MsgId": msg_id,
-			"Event":event,
-			"EventKey":eventkey
+			"MsgType": (
+				xml.find("MsgType") and 
+				xml.find("MsgType").text
+			),
+			"FromUserName": (
+				xml.find("FromUserName") and
+				xml.find("FromUserName").text
+			),
+			"ToUserName": (
+				xml.find("ToUserName") and
+				xml.find("ToUserName").text
+			),
+			"Content": (
+				xml.find("Content") and
+				xml.find("Content").text
+			),
+			"MsgId": (
+				xml.find("MsgId") and
+				xml.find("MsgId").text
+			),
+			"Event": (
+				xml.find("Event") and
+				xml.find("Event").text
+			),
+			"EventKey":(
+				xml.find("EventKey") and
+				xml.find("EventKey").text
+			)
 		}
 
 	def _get_reply(self,wechat_msg):
