@@ -80,17 +80,20 @@ class Wechat:
 			content = xml.find("Content").text
  		elif msg_type == "event":
 			event = xml.find("Event").text
+			eventkey = xml.find("EventKey").text
 		return {
 			"MsgType": msg_type,
 			"FromUserName": from_user,
 			"ToUserName": to_user,
 			"Content": content,
 			"MsgId": msg_id,
-			"Event":event
+			"Event":event,
+			"EventKey":eventkey
 		}
 
 	def _get_reply(self,wechat_msg):
 		msg_type = wechat_msg["MsgType"]
+		logging.debug(msg_type)
 		reply_content = "I don't know what you are talking about :("
 		if msg_type == "event":
 			event = wechat_msg["Event"]
