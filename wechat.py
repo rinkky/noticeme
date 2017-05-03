@@ -91,18 +91,13 @@ class Wechat:
 
 	def _get_reply(self,wechat_msg):
 		msg_type = wechat_msg["MsgType"]
+		reply_content = "I don't know what you are talking about :("
 		if msg_type == "event":
 			event = wechat_msg["Event"]
 			if event == "subscribe":
 				reply_content = (
 					"Thank you for following, "
 					"try this reply:\ncom.mojang.minecraftpe"
-				)
-				return self.render.reply_text(
-					wechat_msg["FromUserName"],
-					wechat_msg["ToUserName"],
-					int(time.time()),
-					reply_content
 				)
 			elif event == "CLICK":
 				eventkey = wechat_msg["EventKey"]
@@ -112,14 +107,10 @@ class Wechat:
 					reply_content = "LIST CONTENT"
 				elif eventkey == "TEST":
 					reply_content = "TEST"
-#			if event == "MASSSENDJOBFINISH":
-#				logging.debug("")
-#				return None
 		elif msg_type == "text":
 			msg_content = wechat_msg["Content"]
 			p = re.compile(r"\w+\.\w+\.\w+")
 			match = p.match(msg_content)
-			reply_content = ""
 			if match:
 				app_uniq_name = match.group(0)
 				app_detail = playstoredata.get_app_detail(app_uniq_name)
@@ -134,12 +125,12 @@ class Wechat:
 			else:
 				reply_content = "No such app"
 
-			return self.render.reply_text(
-				wechat_msg["FromUserName"],
-				wechat_msg["ToUserName"],
-				int(time.time()),
-				reply_content
-			)
+		return self.render.reply_text(
+			wechat_msg["FromUserName"],
+			wechat_msg["ToUserName"],
+			int(time.time()),
+			reply_content
+		)
 
 
 app = web.application(urls, globals())
