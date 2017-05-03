@@ -14,7 +14,7 @@ from lxml import etree
 import sys
 import os
 import time
-sys.path.append("../")
+sys.path.append(os.path.join(sys.path[0],os.pardir))
 from playstoredata import playstoredata
 from test import Test
 import logging

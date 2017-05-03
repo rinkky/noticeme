@@ -4,7 +4,8 @@
 import requests
 import wechatcfg
 import sys
-sys.path.append("../")
+import os
+sys.path.append(os.path.join(sys.path[0],os.pardir))
 from playstoredata import playstoredata
 import time
 import json
