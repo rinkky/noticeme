@@ -2,14 +2,16 @@
 # coding=utf-8
 
 import requests
-import wechatcfg
+###import wechatcfg
 import sys
 import os
 sys.path.append(os.path.join(sys.path[0],os.pardir))
-from playstoredata import playstoredata
 import time
 import json
 
+from playstoredata import playstoredata
+import tokengen
+"""
 url_token = (
 	"https://api.weixin.qq.com/cgi-bin/token"
 	"?grant_type=client_credential&appid={0}&secret={1}"
@@ -27,7 +29,8 @@ print(r.status_code)
 
 data = r.json()
 access_token = data.get("access_token")
-
+"""
+access_token = tokengen.get_token()
 url_sendmsg = (
 	"https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token={0}"
 ).format(access_token)
@@ -64,7 +67,7 @@ headers = {"content-type": "application/json"}
 #time.sleep(60)
 r = requests.post(url_sendmsg, data=data_to_send, headers=headers)
 print(r.status_code)
-#print(r.text)
+print(r.text)
 errmsg = r.json()
 if errmsg.get("errcode") == 0:
 	playstoredata.clean_notice_apps()

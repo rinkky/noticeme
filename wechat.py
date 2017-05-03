@@ -104,10 +104,18 @@ class Wechat:
 					int(time.time()),
 					reply_content
 				)
+			elif event == "CLICK":
+				eventkey = wechat_msg["EventKey"]
+				if eventkey == "HELP":
+					reply_content = "HELP CONTENT"
+				elif eventkey == "SHOW_LIST":
+					reply_content = "LIST CONTENT"
+				elif eventkey == "TEST":
+					reply_content = "TEST"
 #			if event == "MASSSENDJOBFINISH":
 #				logging.debug("")
 #				return None
-		if msg_type == "text":
+		elif msg_type == "text":
 			msg_content = wechat_msg["Content"]
 			p = re.compile(r"\w+\.\w+\.\w+")
 			match = p.match(msg_content)
