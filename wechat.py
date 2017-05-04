@@ -82,16 +82,34 @@ class Wechat:
 		if self.msg_type == "event":
 			if self.event == "subscribe":
 				reply_content = (
-					"Thank you for following, "
-					"try this reply:\ncom.mojang.minecraftpe"
+					"当你关注的APP信息有优惠时，我会通知你。\n"
+					"回复包含appid的任意文字，可以获取APP的价格信息，"
+					"同时把该APP添加进关注列表。\n"
+					"你可以尝试复制该信息并回复。\n"
+					"com.mojang.minecraftpe"
 				)
 			elif self.event == "CLICK":
 				if self.event_key == "HELP":
-					reply_content = "HELP CONTENT"
+					reply_content = (
+						"当你关注的APP信息有优惠时，我会通知你。\n"
+						"回复包含appid的任意文字，可以获取APP的价格信息，"
+						"同时把该APP添加进关注列表。\n"
+						"你可以尝试复制该信息并回复。\n"
+						"com.mojang.minecraftpe"
+					)
 				elif self.event_key == "SHOW_LIST":
-					reply_content = "LIST CONTENT"
+					apps = playstoredata.get_all_uniqname()
+					reply_content = (
+						"Here are all apps in the list.\n"
+						"I will let you know when they are on sale.\n"
+						"--------\n"
+						"\n-------\n".join(apps)
+					)
 				elif self.event_key == "TEST":
-					reply_content = "TEST"
+					reply_content = (
+						"你可以尝试复制该信息并回复。\n"
+						"com.mojang.minecraftpe"
+					)
 		elif self.msg_type == "text":
 			p = re.compile(r"\w+\.\w+\.\w+\.?\w*")
 			match = p.search(self.content)
