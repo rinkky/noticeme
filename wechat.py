@@ -102,8 +102,9 @@ class Wechat:
 					reply_content = (
 						"Here are all apps in the list.\n"
 						"I will let you know when they are on sale.\n"
-						"--------\n"
-						"\n-------\n".join(apps)
+						"--------\n" 
+						+
+						("\n-------\n".join(apps))
 					)
 				elif self.event_key == "TEST":
 					reply_content = (
