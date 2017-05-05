@@ -47,10 +47,6 @@ class Wechat:
 	def POST(self):
 		str_xml = web.data()
 		self._trans_msg(str_xml)
-#		if (self.msg_type == "event" and 
-#			self.event == "MASSSENDJOBFINISH"):
-#			logging.debug(str_xml)
-#			print(str_xml)
 		return self._get_reply()
 
 
